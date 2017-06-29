@@ -20,54 +20,40 @@ typedef struct node {
 typedef struct asciinode_struct
 {
     asciinode_struct * left, * right;
-    
     //length of the edge from this node to its children
     int edge_length;
-    
     int height;
-    
     int lablen;
-    
     //-1=I am left, 0=I am root, 1=right
     int parent_dir;
-    
     //max supported unit32 in dec, 10 digits max
     char label[11];
 } asciinode;
 
 Node* create(int val);
-
 Node* add(Node* root, int val);
-
 Node* remove(Node* root, int val);
-
 void print(Node* root, int value);
-
 Node* find(Node *root, int value);
-
 void freeBST(Node* root);
 
 
-void PrintInorder(Node *node);
-void PrintPreorder(Node *node);
-void PrintPostorder(Node *node);
-void PrettyPrint(Node* node);
+void printInorder(Node *node);
+void printPreorder(Node *node);
+void printPostorder(Node *node);
+void prettyPrint(Node* node);
 
 //Balancing ==> https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
 Node* balance(Node* node);
 void treeToVine(Node *node, int &size);
 void vineToTree(Node *node, int size);
 void compression(Node* node, int size);
-int FullSize(int size);
+int fullSize(int size);
 
 
 int _print_t(Node *tree, int is_left, int offset, int depth, char s[20][255]);
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    
-    
     int option; // user's entered option will be saved in this variable
     Node *input = NULL;
     
@@ -144,18 +130,18 @@ int main(int argc, const char * argv[]) {
             std::cin >> element;
             switch (element) {
                 case 1:
-                    PrintPreorder(input);
+                    printPreorder(input);
                     std::cout<<std::endl;
                     break;
                 case 2:
-                    PrintInorder(input);
+                    printInorder(input);
                     std::cout<<std::endl;
                     break;
                 case 3:
-                    PrintPostorder(input);
+                    printPostorder(input);
                     std::cout<<std::endl;
                 case 4:
-                    PrettyPrint(input);
+                    prettyPrint(input);
                     std::cout<<std::endl;
                 default:
                     break;
@@ -171,7 +157,7 @@ int main(int argc, const char * argv[]) {
         {
             std::cout << "Balancing BST" << std::endl;
             Node* res = balance(input);
-            PrettyPrint(res);
+            prettyPrint(res);
             
         }
         else //if user has entered invalid choice (other than 1,2,3 or 4)
@@ -300,36 +286,36 @@ Node* find(Node *input, int value) {
     }
 }
 
-void PrintInorder(Node *node)
+void printInorder(Node *node)
 {
     if(node==NULL)
     {
         return;
     }
-    PrintInorder(node->left);
+    printInorder(node->left);
     printf("%d ",node->value);
-    PrintInorder(node->right);
+    printInorder(node->right);
 }
 
-void PrintPreorder(Node *node)
+void printPreorder(Node *node)
 {
     if(node==NULL)
     {
         return;
     }
     printf("%d ",node->value);
-    PrintPreorder(node->left);
-    PrintPreorder(node->right);
+    printPreorder(node->left);
+    printPreorder(node->right);
 }
 
-void PrintPostorder(Node *node)
+void printPostorder(Node *node)
 {
     if(node==NULL)
     {
         return;
     }
-    PrintPostorder(node->left);
-    PrintPostorder(node->right);
+    printPostorder(node->left);
+    printPostorder(node->right);
     printf("%d ",node->value);
 }
 
@@ -449,7 +435,7 @@ void treeToVine(Node *root, int &size){
     }
 }
 
-int FullSize(int size){
+int fullSize(int size){
     int Rtn = 1;
     while ( Rtn <= size )     // Drive one step PAST FULL
         Rtn = Rtn + Rtn + 1;   // next pow(2,k)-1
@@ -457,7 +443,7 @@ int FullSize(int size){
 }
 
 void vineToTree(Node *root, int size){
-    int full_count = FullSize (size);
+    int full_count = fullSize (size);
     compression(root, size - full_count);
     for ( size = full_count ; size > 1 ; size /= 2 )
         compression ( root, size / 2 );
